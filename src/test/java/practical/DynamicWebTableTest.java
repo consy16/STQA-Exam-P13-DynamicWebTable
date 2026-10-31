@@ -1,3 +1,4 @@
+
 package practical;
 
 import org.junit.After;
@@ -9,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
@@ -36,74 +38,129 @@ public class DynamicWebTableTest {
 
     @Test
     public void dynamicWebTableTest() {
+
         String filePath = System.getProperty("user.dir")
                 + "/src/test/resources/dynamic-table.html";
+
         driver.get("file://" + filePath);
 
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(
                 By.cssSelector("#tableBody tr"), 0));
 
-        // TASK 1: Extract and display all student records.
-        // TODO 1a: Find all table rows using the #tableBody tr selector.
-        // TODO 1b: Print the total number of rows and assert that there are 10.
-        // TODO 1c: For every row, find its td cells and print all five values.
+        // STUDENT TASK 1 : Extract and display all student records.
 
         List<WebElement> rows = new ArrayList<>();
 
+        // TASK 1 - WRITE YOUR CODE HERE
+
+
         System.out.println("Total rows: " + rows.size());
-        assertEquals("Table should contain 10 students", 10, rows.size());
 
-        // TODO: Add the loop to print each student's ID, name, course, marks and result.
+        assertEquals("Table should contain 10 students",
+                10, rows.size());
 
 
-        // TASK 2: Validate ascending and descending sorting by marks.
-        // TODO 2a: Click the sortMarks button and collect the marks.
-        // TODO 2b: Assert that the marks are in ascending order.
-        // TODO 2c: Click sortMarks again, collect the marks and assert descending order.
+        // Sorting by marks in ascending order.
 
         driver.findElement(By.id("sortMarks")).click();
+
         List<Integer> ascendingMarks = getMarksFromTable();
+
         assertTrue("Marks should be sorted in ascending order",
                 isAscending(ascendingMarks));
 
+        System.out.println("Ascending Marks: " + ascendingMarks);
+
+
+        // Sorting by marks in descending order.
+
         driver.findElement(By.id("sortMarks")).click();
+
         List<Integer> descendingMarks = getMarksFromTable();
+
         assertTrue("Marks should be sorted in descending order",
                 isDescending(descendingMarks));
 
+        System.out.println("Descending Marks: " + descendingMarks);
 
-        // TASK 3: Apply the Pass filter and validate the displayed rows.
-        // TODO 3a: Select the option with value Pass from #resultFilter.
-        // TODO 3b: Find the displayed rows and assert that exactly 6 remain.
-        // TODO 3c: Check that the result cell (fifth cell) of every row says Pass.
+
+        // STUDENT TASK 2 : Apply Pass filter and validate the displayed rows.
+
+        // TASK 2 - WRITE YOUR CODE HERE
+
 
         List<WebElement> filteredRows = new ArrayList<>();
+
         assertEquals("Pass filter should display 6 students",
                 6, filteredRows.size());
 
-        // TODO: Loop through filteredRows and assert that each row's fifth cell is "Pass".
+        for (WebElement row : filteredRows) {
+            String result = row.findElements(By.tagName("td"))
+                    .get(4).getText();
+
+            assertEquals("Pass", result);
+        }
+
+        System.out.println("Pass filter validation completed successfully.");
     }
+
+
+    // Helper method to collect marks from the table.
 
     private List<Integer> getMarksFromTable() {
-        // TODO: Find all table rows, read marks from the fourth cell,
-        // convert each mark to an integer, and return the list.
-        return new ArrayList<>();
+
+        List<Integer> marks = new ArrayList<>();
+
+        List<WebElement> rows = driver.findElements(
+                By.cssSelector("#tableBody tr"));
+
+        for (WebElement row : rows) {
+
+            List<WebElement> cells = row.findElements(
+                    By.tagName("td"));
+
+            int mark = Integer.parseInt(cells.get(3).getText());
+
+            marks.add(mark);
+        }
+
+        return marks;
     }
+
+
+    // Check ascending order.
 
     private boolean isAscending(List<Integer> values) {
-        // TODO: Return false if any value is greater than the next value.
-        // Otherwise, return true.
-        return false;
+
+        for (int i = 0; i < values.size() - 1; i++) {
+
+            if (values.get(i) > values.get(i + 1)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
+
+    // Check descending order.
+
     private boolean isDescending(List<Integer> values) {
-        // TODO: Return false if any value is less than the next value.
-        // Otherwise, return true.
-        return false;
+
+        for (int i = 0; i < values.size() - 1; i++) {
+
+            if (values.get(i) < values.get(i + 1)) {
+                return false;
+            }
+        }
+
+        return true;
     }
+
 
     @After
     public void tearDown() {
+
         if (driver != null) {
             driver.quit();
         }
