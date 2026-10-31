@@ -26,6 +26,7 @@ public class DynamicWebTableTest {
 
     @Before
     public void setUp() {
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
@@ -47,11 +48,14 @@ public class DynamicWebTableTest {
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(
                 By.cssSelector("#tableBody tr"), 0));
 
-        // STUDENT TASK 1 : Extract and display all student records.
+
+        // STUDENT TASK 1:
+        // Extract and display all student records.
 
         List<WebElement> rows = new ArrayList<>();
 
         // TASK 1 - WRITE YOUR CODE HERE
+
 
 
         System.out.println("Total rows: " + rows.size());
@@ -84,17 +88,20 @@ public class DynamicWebTableTest {
         System.out.println("Descending Marks: " + descendingMarks);
 
 
-        // STUDENT TASK 2 : Apply Pass filter and validate the displayed rows.
+        // STUDENT TASK 2:
+        //  TASK 2 - WRITE YOUR CODE HERE
+
+        List<WebElement> filteredRows = new ArrayList<>();
 
         // TASK 2 - WRITE YOUR CODE HERE
 
 
-        List<WebElement> filteredRows = new ArrayList<>();
 
         assertEquals("Pass filter should display 6 students",
                 6, filteredRows.size());
 
         for (WebElement row : filteredRows) {
+
             String result = row.findElements(By.tagName("td"))
                     .get(4).getText();
 
