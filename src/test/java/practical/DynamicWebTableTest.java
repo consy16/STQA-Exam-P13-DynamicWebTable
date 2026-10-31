@@ -89,7 +89,7 @@ public class DynamicWebTableTest {
 
 
         // STUDENT TASK 2:
-        //  TASK 2 - WRITE YOUR CODE HERE
+        // Apply Pass filter and validate the displayed rows
 
         List<WebElement> filteredRows = new ArrayList<>();
 
